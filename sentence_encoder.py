@@ -1,4 +1,4 @@
-omeimport skipthoughts
+import skipthoughts
 from nltk import tokenize
 import csv
 import unicodecsv

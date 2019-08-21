@@ -24,6 +24,7 @@ for speech in speeches:
 
 
 # Convert array of sentences vectors into array of vectors
+print('encoding...')
 vectors = encoder.encode(sentences)
 numpy.savetxt("LectureTable_embeddings.csv", vectors, delimiter=",")
 # print vectors into file, 4800 columns per row

@@ -58,3 +58,9 @@ target/
 
 # Downloaded data files
 data/
+*.npz
+*.pkl
+*.npy
+results/
+/dictionary.txt
+*.py~

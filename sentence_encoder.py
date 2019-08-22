@@ -2,6 +2,7 @@ import skipthoughts
 from nltk import tokenize
 import unicodecsv
 import numpy
+from tqdm import tqdm
 
 model = skipthoughts.load_model()
 encoder = skipthoughts.Encoder(model)
@@ -26,10 +27,10 @@ for speech in speeches:
 # Convert array of sentences vectors into array of vectors
 print('encoding...')
 
-batch_size = 2000
+batch_size = 4000
 num_batches = len(sentences) / batch_size
 
-for batch_number in range(num_batches):
+for batch_number in tqdm(range(num_batches)):
     batch_start_index = batch_number * batch_size
     if batch_number == num_batches:
         batch_end_index = len(sentences)
@@ -37,5 +38,5 @@ for batch_number in range(num_batches):
         batch_end_index = batch_start_index + batch_size
 
     batch_sentences = sentences[batch_start_index:batch_end_index]
-    batch_vectors = encoder.encode(batch_sentences)
-    numpy.savetxt("./results/LectureTable_embeddings_batch_"+ str(batch_number) +  ".csv", vectors, delimiter=",")
+    batch_vectors = encoder.encode(batch_sentences, verbose=False)
+    numpy.savetxt("./results/LectureTable_embeddings_batch_"+ str(batch_number) +  ".csv", batch_vectors, delimiter=",")

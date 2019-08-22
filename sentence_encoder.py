@@ -37,4 +37,4 @@ for batch_number in range(num_batches):
 
     batch_sentences = sentences[batch_start_index:batch_end_index]
     batch_vectors = encoder.encode(batch_sentences)
-    numpy.savetxt("LectureTable_embeddings_batch_"+ str(batch_number) +  ".csv", vectors, delimiter=",")
+    numpy.savetxt("./results/LectureTable_embeddings_batch_"+ str(batch_number) +  ".csv", vectors, delimiter=",")

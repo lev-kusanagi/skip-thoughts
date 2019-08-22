@@ -27,6 +27,7 @@ for speech in speeches:
 print('encoding...')
 
 batch_size = 2000
+num_batches = len(sentences) / batch_size
 
 for batch_number in range(num_batches):
     batch_start_index = batch_number * batch_size

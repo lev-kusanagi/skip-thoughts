@@ -25,6 +25,16 @@ for speech in speeches:
 
 # Convert array of sentences vectors into array of vectors
 print('encoding...')
-vectors = encoder.encode(sentences)
-numpy.savetxt("LectureTable_embeddings.csv", vectors, delimiter=",")
-# print vectors into file, 4800 columns per row
+
+batch_size = 2000
+
+for batch_number in range(num_batches):
+    batch_start_index = batch_number * batch_size
+    if batch_number == num_batches:
+        batch_end_index = len(sentences)
+    else:
+        batch_end_index = batch_start_index + batch_size
+
+    batch_sentences = sentences[batch_start_index:batch_end_index]
+    batch_vectors = encoder.encode(batch_sentences)
+    numpy.savetxt("LectureTable_embeddings_batch_"+ str(batch_number) +  ".csv", vectors, delimiter=",")

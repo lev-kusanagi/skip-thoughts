@@ -1,6 +1,5 @@
 import skipthoughts
 from nltk import tokenize
-import csv
 import unicodecsv
 
 model = skipthoughts.load_model()

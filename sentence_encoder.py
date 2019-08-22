@@ -7,12 +7,17 @@ from tqdm import tqdm
 model = skipthoughts.load_model()
 encoder = skipthoughts.Encoder(model)
 
+# Define file to compute embeddings for
+# file = 'LectureTable'
+file = 'QATable'
+file_path = './data/' + file + '.txt'
+
 # load file
-with open('./data/LectureTable.txt', 'r') as f:
-  LectureTable_list = list(unicodecsv.reader(f, delimiter='\t'))
+with open(file_path, 'r') as f:
+  file_list = list(unicodecsv.reader(f, delimiter='\t'))
 # get list of speeches
 speeches = []
-for entry in LectureTable_list:
+for entry in file_list:
     speeches.append(entry[8])
 
 sentences = []
@@ -39,4 +44,4 @@ for batch_number in tqdm(range(num_batches)):
 
     batch_sentences = sentences[batch_start_index:batch_end_index]
     batch_vectors = encoder.encode(batch_sentences, verbose=False)
-    numpy.savetxt("./results/LectureTable_embeddings_batch_"+ str(batch_number) +  ".csv", batch_vectors, delimiter=",")
+    numpy.savetxt("./results/' + file + '_embeddings_batch_"+ str(batch_number) +  ".csv", batch_vectors, delimiter=",")

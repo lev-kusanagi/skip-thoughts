@@ -1,6 +1,5 @@
 import skipthoughts
 from nltk import tokenize
-import csv
 import unicodecsv
 
 # load file
@@ -20,5 +19,5 @@ for speech in speeches:
     sentences.extend(speech_sentences)
 
 with open('results/LectureTable_sentences.csv', 'w') as csvfile:
-    writer = csv.writer(csvfile, delimiter=",")
+    writer = unicodecsv.writer(csvfile, delimiter=",")
     writer.writerow(sentences)

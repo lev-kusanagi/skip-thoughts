@@ -18,6 +18,9 @@ for speech in speeches:
     speech_sentences = tokenize.sent_tokenize(speech)
     sentences.extend(speech_sentences)
 
+# remove heading
+sentences.pop(0)
+
 with open('results/LectureTable_sentences.csv', 'w') as csvfile:
-    writer = unicodecsv.writer(csvfile, delimiter=",")
+    writer = unicodecsv.writer(csvfile, delimiter="\n")
     writer.writerow(sentences)

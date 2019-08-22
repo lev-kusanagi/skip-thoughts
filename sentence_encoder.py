@@ -1,6 +1,7 @@
 import skipthoughts
 from nltk import tokenize
 import unicodecsv
+import numpy
 
 model = skipthoughts.load_model()
 encoder = skipthoughts.Encoder(model)

@@ -64,3 +64,4 @@ data/
 results/
 /dictionary.txt
 *.py~
+/.DS_Store

@@ -44,4 +44,4 @@ for batch_number in tqdm(range(num_batches)):
 
     batch_sentences = sentences[batch_start_index:batch_end_index]
     batch_vectors = encoder.encode(batch_sentences, verbose=False)
-    numpy.savetxt("./results/' + file + '_embeddings_batch_"+ str(batch_number) +  ".csv", batch_vectors, delimiter=",")
+    numpy.savetxt("./results/" + file + "_embeddings_batch_"+ str(batch_number) +  ".csv", batch_vectors, delimiter=",")

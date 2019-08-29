@@ -1,45 +1,47 @@
+import skipthoughts
+from nltk import tokenize
+import unicodecsv
+import csv
 import numpy
 from tqdm import tqdm
-import csv
-filenames_end = '_vectors.npy'
-file_path = './'
-number_of_files = 251
-batch_size = 4000
-results = []
 
-sentence_generator = ()
+model = skipthoughts.load_model()
+encoder = skipthoughts.Encoder(model)
 
-for paragraph_indices in paragraph_indices_list:
-    # collect sentences
-    sentences = []
-    paragraph_indices_range = paragraph_indices[1] - paragraph_indices[0]
-    for i in range(paragraph_indices_range):
-        sentences.append(sentence_generator.yield) # fix syntax
+# Define file to compute embeddings for
+file = 'T1_L_Sentence'
+file_path = './data/' + file + '.csv'
 
-    # compute features
+# load paragraph indices from file
+paragraph_indices_filename = './data/T2_L.csv'
+with open(paragraph_indices_filename, 'r') as f:
+    paragraph_indices_list = list(csv.reader(f, delimiter=',')
 
 
-    
-# for batch_number in range(251):
+# def compute_features(vectors):
+#     # not implemented yet
+#     return    
 
-#     vectors = numpy.load(file_path + str(batch_number) + filenames_end)
-#     batch_first_sentence_index = batch_number * batch_size
-#     batch_last_sentence_index = batch_first_sentence_index + len(vectors)
+# for paragraph_indices in paragraph_indices_list: 
+                                  
+                              
+# # Convert array of sentences vectors into array of vectors
+# print('Encoding and computing features...')
 
-#     sentence_index = batch_first_sentence_index
-#     for paragraph_indices in paragraph_indices_list:
-#         if paragraph_indices 
+# batch_size = 4000
+# num_batches = len(file_list) / batch_size
 
-# num_batches = len(sentences) / batch_size
+# for batch_number in tqdm(range(num_batches)):
+#     batch_start_index = batch_number * batch_size
+#     if batch_number == num_batches:
+#         batch_end_index = len(file_list)
+#     else:
+#         batch_end_index = batch_start_index + batch_size
 
-for batch_number in tqdm(range(num_batches)):
-    batch_start_index = batch_number * batch_size
-    if batch_number == num_batches:
-        batch_end_index = len(file_list)
-    else:
-        batch_end_index = batch_start_index + batch_size
+#     batch_sentences = file_list[batch_start_index:batch_end_index][1]
+#     batch_vectors = encoder.encode(batch_sentences, verbose=False)
 
-    batch_sentences = file_list[batch_start_index:batch_end_index][1]
-    batch_vectors = encoder.encode(batch_sentences, verbose=False)
-    # numpy.savetxt("./results/" + file + "_embeddings_batch_"+ str(batch_number) +  ".csv", batch_vectors, delimiter=",")
-    numpy.save(str(batch_numer) + "_vectors.npy")
+#     features = compute_features(batch_vectors)
+
+#     numpy.save("./results/" + str(batch_number) + "_vectors.npy", batch_vectors)
+#     # paragraph_indices = list(unicodecsv.reader(open(paragraph_indices_file), 'r'), delimiter=',')

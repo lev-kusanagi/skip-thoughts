@@ -12,12 +12,12 @@ model = skipthoughts.load_model()
 encoder = skipthoughts.Encoder(model)
 
 # Define file to compute embeddings for
-file = 'T1_L_Sentence'
+file = 'T1_Q_Sentence'
 file_path = './data/' + file + '.csv'
 with open(file_path, 'r') as f:
   file_list = list(csv.reader(f, delimiter=','))
 # load paragraph indices from file
-paragraph_indices_filename = './data/T2_L.csv'
+paragraph_indices_filename = './data/T2_Q0.csv'
 with open(paragraph_indices_filename, 'r') as f:
     paragraph_indices_list = list(csv.reader(f, delimiter=','))
 print('Data files are loaded.')
@@ -88,6 +88,6 @@ for paragraph_indices in tqdm(paragraph_indices_list):
   features.append(paragraph_features)
 
   if i % 500 == 0:
-    np.save('lecturetable_features_checkpoint' + str(i), features)
+    np.save('qatable_features_checkpoint' + str(i), features)
 
-np.save('lecturetable_features', features)    
+np.save('qatable_features', features)

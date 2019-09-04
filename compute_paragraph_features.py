@@ -57,10 +57,11 @@ def compute_features(vectors):
 
 features = []
 i = 0
-for paragraph_indices in tqdm(paragraph_indices_list):
+for paragraph_indices in tqdm(paragraph_indices_list[3015:3016]):
   i += 1
   print('Current iteration: ' + str(i))
-  paragraph_sentences = [x[1] for x in file_list[int(paragraph_indices[0]):int(paragraph_indices[1])]]
+  paragraph_sentences = [x[1].decode('utf-8') for x in file_list[int(paragraph_indices[0]):int(paragraph_indices[1])]]
+  print(paragraph_sentences)
   paragraph_features = []
 
   # add paragraph id and paragraph # sentences
@@ -89,6 +90,6 @@ for paragraph_indices in tqdm(paragraph_indices_list):
   features.append(paragraph_features)
 
   if i % 500 == 0:
-    np.save('lecturetable_features_checkpoint' + str(i), features
+    np.save('lecturetable_features_checkpoint' + str(i), features)
 
 np.save('lecturetable_features', features)    

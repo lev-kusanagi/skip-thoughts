@@ -59,8 +59,8 @@ features = []
 i = 0
 for paragraph_indices in tqdm(paragraph_indices_list):
   i += 1
-  print('Current iteration: ' + str(i))
-  paragraph_sentences = [x[1].decode('utf-8') for x in file_list[int(paragraph_indices[0]):int(paragraph_indices[1])]]
+  
+  paragraph_sentences = [x[1].decode('utf-8') for x in file_list[int(paragraph_indices[0]):int(paragraph_indices[1]) + 1]]
   paragraph_features = []
 
   # add paragraph id and paragraph # sentences

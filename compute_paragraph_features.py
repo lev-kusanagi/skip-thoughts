@@ -62,6 +62,10 @@ for paragraph_indices in paragraph_indices_list[:10]:
   print('at this iteration: ' + str(i))
   paragraph_sentences = [x[1] for x in file_list[int(paragraph_indices[0]):int(paragraph_indices[1])]]
   paragraph_features = []
+
+  # add paragraph id and paragraph # sentences
+  paragraph_features.extend([i, int(paragraph_indices[1]) - int(paragraph_indices[0])])
+
   vectors = encoder.encode(paragraph_sentences, verbose=False)
   print('Full vectors are computed')
   # 1. first 24k

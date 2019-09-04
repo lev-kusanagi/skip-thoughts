@@ -2,11 +2,12 @@ import skipthoughts
 from nltk import tokenize
 import unicodecsv
 import csv
-import numpy
+import numpy as np
 from scipy import spatial
 from tqdm import tqdm
-from sklearn.manifold import TSNE
+from sklearn.decomposition import PCA
 
+print('Loading model and encoder...')
 model = skipthoughts.load_model()
 encoder = skipthoughts.Encoder(model)
 
@@ -19,7 +20,7 @@ with open(file_path, 'r') as f:
 paragraph_indices_filename = './data/T2_L.csv'
 with open(paragraph_indices_filename, 'r') as f:
     paragraph_indices_list = list(csv.reader(f, delimiter=','))
-
+print('Data files are loaded.')
 
 def get_l1_features(vectors):
     '''Returns mean and std for the l1 distances of vectors'''
@@ -36,11 +37,14 @@ def get_l2_features(vectors):
     return np.mean(distances), np.std(distances)
 
 def get_cosine_features(vectors):
-    '''Returns mean and std for the cosine similarities of vectors'''
+    '''Returns mean and std for the cosine distances and simlarities of vectors'''
     distances = []
+    similarities = []
     for i in range(len(vectors) - 1):
-        distances.append(spatial.distance.cosine(vectors[i+1], vectors[i]))
-    return np.mean(distances), np.std(distances)    
+      distance = spatial.distance.cosine(vectors[i+1], vectors[i])
+      distances.append(distance)
+      similarities.append(1 - distance)
+    return np.mean(distances), np.std(distances), np.mean(similarities), np.std(similarities)
 
 def compute_features(vectors):
     '''Returns a L1_m, L1_std, L2_m, L2_std, cosine_m, cosine_std for the list of input vectors.'''
@@ -52,23 +56,28 @@ def compute_features(vectors):
     return [x for y in features for x in y]
 
 features = []
+i = 0
+for paragraph_indices in paragraph_indices_list[:10]:
+  i += 1
+  print('at this iteration: ' + str(i))
+  paragraph_sentences = [x[1] for x in file_list[int(paragraph_indices[0]):int(paragraph_indices[1])]]
+  paragraph_features = []
+  vectors = encoder.encode(paragraph_sentences, verbose=False)
+  print('Full vectors are computed')
+  # 1. first 24k
+  vectors_1st_24 = [x[:2400] for x in vectors]
+  paragraph_features.extend(compute_features(vectors_1st_24))
+  vectors_last_24 = [x[2400:] for x in vectors]
+  paragraph_features.extend(compute_features(vectors_last_24))
+  paragraph_features.extend(compute_features(vectors))
+  
+  vectors_pca_100 = PCA(n_components=100).fit_transform(vectors)
+  paragraph_features.extend(compute_features(vectors_pca_100))
+  vectors_pca_200 = PCA(n_components=200).fit_transform(vectors)
+  paragraph_features.extend(compute_features(vectors_pca_200))
+  vectors_pca_600 = PCA(n_components=600).fit_transform(vectors)
+  paragraph_features.extend(compute_features(vectors_pca_600))
+  
+  features.append(paragraph_features)
 
-for paragraph_indices in paragraph_indices_list:
-    paragraph_sentences = [x[1] for x in file_list[int(paragraph_indices[0]):int(paragraph_indices[1])]]
-    paragraph_features = []
-    vectors = encoder.encode(batch_sentences, verbose=False)
-    
-    # 1. first 24k
-    vectors_1st_24 = [x[:2400] for x in vectors]
-    paragraph_features.extend(compute_features[vectors_1st_24])
-    vectors_last_24 = [x[2400:] for x in vectors]
-    paragraph_features.extend(compute_features[vectors_last_24])
-    paragraph_features.extend(compute_features[vectors])
-    tsne_100 = TSNE(n_components = 100).fit_transform(vectors)
-    paragraph_features.extend(compute_features[tsne_100])
-    tsne_200 = TSNE(n_components = 200).fit_transform(vectors)
-    paragraph_features.extend(compute_features[tsne_200])
-    tsne_600 = TSNE(n_components = 600).fit_transform(vectors)
-    paragraph_features.extend(compute_features[tsne_600])
-    
-    features.append(paragraph_features)
+np.save('file1_features', features)    

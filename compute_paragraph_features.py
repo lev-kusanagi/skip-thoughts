@@ -88,4 +88,7 @@ for paragraph_indices in tqdm(paragraph_indices_list):
   
   features.append(paragraph_features)
 
+  if i % 500 == 0:
+    np.save('lecturetable_features_checkpoint' + str(i), features
+
 np.save('lecturetable_features', features)    

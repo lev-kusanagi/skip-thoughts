@@ -64,7 +64,7 @@ for paragraph_indices in tqdm(paragraph_indices_list):
   paragraph_features = []
 
   # add paragraph id and paragraph # sentences
-  paragraph_features.extend([i, int(paragraph_indices[1]) - int(paragraph_indices[0])])
+  paragraph_features.extend([i, len(paragraph_sentences)])
   vectors = encoder.encode(paragraph_sentences, verbose=False)
 
   # Some entries have zero sentences, eg. entry 32

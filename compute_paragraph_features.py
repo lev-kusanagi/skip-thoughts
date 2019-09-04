@@ -57,24 +57,28 @@ def compute_features(vectors):
 
 features = []
 i = 0
-for paragraph_indices in paragraph_indices_list[:10]:
+for paragraph_indices in tqdm(paragraph_indices_list):
   i += 1
-  print('at this iteration: ' + str(i))
+  print('Current iteration: ' + str(i))
   paragraph_sentences = [x[1] for x in file_list[int(paragraph_indices[0]):int(paragraph_indices[1])]]
   paragraph_features = []
 
   # add paragraph id and paragraph # sentences
   paragraph_features.extend([i, int(paragraph_indices[1]) - int(paragraph_indices[0])])
-
   vectors = encoder.encode(paragraph_sentences, verbose=False)
   print('Full vectors are computed')
-  # 1. first 24k
+
+  # Some entries have zero sentences, eg. entry 32
+  if vectors.shape[0] == 0:
+    paragraph_features.extend([0] * 48)
+    continue
+  
   vectors_1st_24 = [x[:2400] for x in vectors]
   paragraph_features.extend(compute_features(vectors_1st_24))
   vectors_last_24 = [x[2400:] for x in vectors]
   paragraph_features.extend(compute_features(vectors_last_24))
   paragraph_features.extend(compute_features(vectors))
-  
+
   vectors_pca_100 = PCA(n_components=100).fit_transform(vectors)
   paragraph_features.extend(compute_features(vectors_pca_100))
   vectors_pca_200 = PCA(n_components=200).fit_transform(vectors)
@@ -84,4 +88,4 @@ for paragraph_indices in paragraph_indices_list[:10]:
   
   features.append(paragraph_features)
 
-np.save('file1_features', features)    
+np.save('lecturetable_features', features)    

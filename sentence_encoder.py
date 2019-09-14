@@ -35,7 +35,7 @@ for batch_number in tqdm(range(num_batches)):
     batch_sentences = sentences[batch_start_index:batch_end_index]
     batch_vectors = encoder.encode(batch_sentences, verbose=False)
     vectors = np.vstack([vectors, batch_vectors])
-    if (batch_number + 1) % checkpoint_frequency) == 0:
+    if (batch_number + 1) % checkpoint_frequency == 0:
       np.save('qatable_sentences_embeddings_' + str(batch_size * checkpoint_frequency * output_file_index) + '_to_' + str(batch_size * checkpoint_frequency * (output_file_index + 1)), vectors)
       vectors = np.empty((0, embedding_size ))
       output_file_index += 1

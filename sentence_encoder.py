@@ -8,7 +8,7 @@ encoder = skipthoughts.Encoder(model)
 embedding_size = 4800
 
 # Define file to compute embeddings for
-file = 'T1_Q_Sentence'
+file = 'T1_L_Sentence'
 file_path = './data/' + file + '.csv'
 
 # load file
@@ -36,10 +36,10 @@ for batch_number in tqdm(range(num_batches)):
     batch_vectors = encoder.encode(batch_sentences, verbose=False)
     vectors = np.vstack([vectors, batch_vectors])
     if (batch_number + 1) % checkpoint_frequency == 0:
-      np.save('qatable_sentences_embeddings_' + str(batch_size * checkpoint_frequency * output_file_index) + '_to_' + str(batch_size * checkpoint_frequency * (output_file_index + 1)), vectors)
+      np.save('lecturetable_sentences_embeddings_' + str(batch_size * checkpoint_frequency * output_file_index) + '_to_' + str(batch_size * checkpoint_frequency * (output_file_index + 1)), vectors)
       vectors = np.empty((0, embedding_size ))
       output_file_index += 1
     if batch_number == num_batches - 1:
-      np.save('qatable_sentences_embeddings_' + str(batch_size * checkpoint_frequency * output_file_index) + '_to_' + str(batch_end_index), vectors)
+      np.save('lecturetable_sentences_embeddings_' + str(batch_size * checkpoint_frequency * output_file_index) + '_to_' + str(batch_end_index), vectors)
 
  

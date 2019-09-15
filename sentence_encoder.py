@@ -25,7 +25,7 @@ output_file_index = 0
 checkpoint_frequency = 20
 
 for batch_number in tqdm(range(num_batches)):
-  # checkpoint save every 10% progress or so
+
     batch_start_index = batch_number * batch_size
     if batch_number == num_batches - 1:
         batch_end_index = len(sentences)
